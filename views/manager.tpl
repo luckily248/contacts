@@ -31,30 +31,33 @@
                   <th>电话</th>
                 </tr>
               </thead>
-              <tbody class="contacts">
-			{{range $k,$v:=.contacts}}
-			
-                <tr>
-                  <td>{{$k}}</td>
-                  <td>{{$v.Name}}</td>
-                  <td>{{$v.Remark}}</td>
-                  <td>{{$v.Phone}}</td>
-					<td>
+              
+				<tbody id="contacts" data-refresh-url="/contacts/getalltable">
+					{{range $k,$v:=.contacts}}
+				
+           		     <tr>
+           		       <td>{{$k}}</td>
+           		       <td>{{$v.Name}}</td>
+           		       <td>{{$v.Remark}}</td>
+           		       <td>{{$v.Phone}}</td>
+						<td>
 					
-				<a  class="btn ajax" herf="/contacts/v.id/update" data-method="post">
+				<a  class="btn ajax" href="/contacts/{{$v.GetId}}/preupdate" data-method="post" data-replace-closest="tr">
 					<i class="glyphicon glyphicon-pencil">
 					</i>
 					</a>
-		 	  	<a  class="btn ajax" herf="/contacts/v.id/del" data-method="post" data-remove-closest="tr">
-					<i class="glyphicon glyphicon-remove">
+		 	  	<a  class="btn ajax" href="/contacts/{{$v.GetId}}/del" data-method="post" data-remove-closest="tr">
+					<i class="glyphicon glyphicon-trash">
 					</i>
 					</a>
 					</td>
                 </tr>
 				{{end}}
-              </tbody>
+				 </tbody>
+			
+             
             </table>
-			<a class="btn  btn-success ajax" herf="" data-method="post " data-append=".contacts">添加联系人</a>
+			<a class="btn ajax" href="/contacts/add" data-method="post" data-append="#contacts">添加联系人</a>
           </div>
 	<script>
 	)

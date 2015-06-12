@@ -43,10 +43,18 @@ func TestDB(t *testing.T){
 	if err!=nil{
 		t.Error(err)
 	}
+	
 	contacts,err:=GetAllContact(*new(Contact))
 	if len(contacts)!=0{
 		t.Logf("%v\n",contacts)
 		t.Logf("%s\n",contacts[0].Id)
+		contact1ex:=new(Contact)
+		contact1ex.SetId(contacts[0].GetId())
+		err=GetContactById(*contact1ex)
+		if err!=nil{
+			t.Error(err)
+		}
+	t.Logf("%v\n",contact1ex)
 		contact2:=&Contact{*new(BaseDBmodel),contacts[0].Id,"new","pig","12312312 1231231231 123123"}
 		t.Log("start updata!")
 		err2:=UpdataContact(*contact2)
@@ -68,7 +76,7 @@ func TestDB(t *testing.T){
 		}
 	}
 	contacts,err=GetAllContact(*new(Contact))
-	if len(contacts)!=0{
+	if len(contacts)==0{
 		t.Logf("%s\n","len=0")
 	}else{
 		t.Logf("%v\n",contacts)
