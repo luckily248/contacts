@@ -29,11 +29,11 @@ func (c *UpdateController) Index() {
 func (c *UpdateController) Add(){
 	rawt,err:=template.ParseFiles("/Developer/gopath/src/contacts/views/contactraw.tpl")
 	if err!=nil{
-		fmt.Printf("%v\n",err)
+		fmt.Errorf("%s\n",err.Error())
 	}
 	var buf bytes.Buffer
-	rawt.Execute(&buf,nil)
-	c.Data["contact"]=&Contact{}
+	contact:=NewContact()
+	rawt.Execute(&buf,contact)
 	c.Data["json"]=map[string]interface{}{
 		"html":buf.String(),
 	}
@@ -45,7 +45,12 @@ func (c *UpdateController) Add(){
 // "contacts/:id/del" 删除id对应对象
 func (c *UpdateController) Del(){
 	id:=c.Ctx.Input.Param(":id")
-	fmt.Printf("%s\n",id)
+	contact:=Contact{}
+	contact.SetId(id)
+	err:=DelContactById(contact)
+	if err!=nil{
+		c.Ctx.WriteString(err.Error())
+	}
 	c.Ctx.Output.Status=200
 	return
 }
@@ -53,8 +58,21 @@ func (c *UpdateController) Del(){
 // "contacts/:id/update" 更新id对应对象
 func (c *UpdateController) Update(){
 	id:=c.Ctx.Input.Param(":id")
-	fmt.Printf("%s\n",id)
+	contact:=Contact{}
+	err:=c.ParseForm(&contact)
 	c.Ctx.Output.Status=200
+	//fmt.Printf("id:%s\n",contact.GetId())
+	//fmt.Printf("name:%s\n",contact.Name)
+	if err!=nil{
+			fmt.Errorf("parseerr:%s\n",err.Error())
+			return
+	}
+	contact.SetId(id)
+	err=UpsertContact(contact)
+	if err!=nil{
+		fmt.Errorf("update%s\n",err.Error())
+		return
+	}
 	return
 }
 
@@ -63,19 +81,23 @@ func (c *UpdateController)PreUpdate(){
 	id:=c.Ctx.Input.Param(":id")
 	rawt,err:=template.ParseFiles("/Developer/gopath/src/contacts/views/contactraw.tpl")
 	if err!=nil{
-		fmt.Printf("%v\n",err)
+		c.Ctx.WriteString(err.Error())
 	}
 	contact:=new(Contact)
 	contact.SetId(id)
-	fmt.Printf("%s\n",id)
-	UpdataContact(*contact)
+	contact,err =GetContactById(*contact)
+	if err!=nil{
+		c.Ctx.WriteString(err.Error())
+		//fmt.Errorf("%v\n",err)
+	}
+	fmt.Printf("id:%s\n",contact.GetId())
+	fmt.Printf("name:%s\n",contact.Name)
 	var buf bytes.Buffer
 	rawt.Execute(&buf,contact)
-	c.Data["contact"]=&Contact{}
 	c.Data["json"]=map[string]interface{}{
 		"html":buf.String(),
 	}
-	fmt.Printf("%v\n",buf.String())
+	//fmt.Printf("%v\n",buf.String())
 	c.Ctx.Output.Status=200
 	c.ServeJson()
 }
@@ -93,7 +115,7 @@ func (c *UpdateController) GetAll(){
 func (c *UpdateController)GetAllTable(){
 	rawt,err:=template.ParseFiles("/Developer/gopath/src/contacts/views/contactstable.tpl")
 	if err!=nil{
-		fmt.Printf("%v\n",err)
+		c.Ctx.WriteString(err.Error())
 	}
 	contact:=new(Contact)
 	contacts,err:=GetAllContact(*contact)
@@ -105,7 +127,7 @@ func (c *UpdateController)GetAllTable(){
 	c.Data["json"]=map[string]interface{}{
 		"html":buf.String(),
 	}
-	fmt.Printf("%v\n",buf.String())
+	//fmt.Printf("%v\n",buf.String())
 	c.Ctx.Output.Status=200
 	c.ServeJson()
 }

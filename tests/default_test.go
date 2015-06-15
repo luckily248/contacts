@@ -54,7 +54,7 @@ func TestDB(t *testing.T){
 		if err!=nil{
 			t.Error(err)
 		}
-	t.Logf("%v\n",contact1ex)
+	t.Logf("findbyid :%s\n",contact1ex.Name)
 		contact2:=&Contact{*new(BaseDBmodel),contacts[0].Id,"new","pig","12312312 1231231231 123123"}
 		t.Log("start updata!")
 		err2:=UpdataContact(*contact2)

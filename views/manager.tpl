@@ -25,9 +25,9 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>编号</th>
-                  <th>名字</th>
-                  <th>职位</th>
+                  <th style="width: 5%">编号</th>
+                  <th style="width: 15%">名字</th>
+                  <th style="width: 15%">职位</th>
                   <th>电话</th>
                 </tr>
               </thead>
