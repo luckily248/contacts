@@ -6,14 +6,15 @@ import(
 	
 type Contact struct{
 	BaseDBmodel
-	Id   bson.ObjectId `bson:"_id" form:"-"`
-	Name string  `form:"name"`
+	Id   bson.ObjectId `bson:"_id" form:"-" `
+	Name string  `form:"name" valid:"Required"`
 	Remark string `form:"remark"`
-	Phone string `form:"phone"`
+	Phone1 string `form:"phone1" valid:"Mobile"`
+	Phone2 string `form:"phone2" valid:"Mobile"`
 }
 
 func NewContact()*Contact{
-	return &Contact{BaseDBmodel{},bson.NewObjectId(),"","",""}
+	return &Contact{BaseDBmodel{},bson.NewObjectId(),"","","",""}
 }
 
 func (this *Contact) Tablename() string {
@@ -49,7 +50,8 @@ func UpsertContact(contact Contact)error{
 	_,err:=contact.c.Upsert(bson.M{"_id":contact.Id},bson.M{"$set":bson.M{
 		"name":contact.Name,
 		"remark":contact.Remark,
-		"phone":contact.Phone,
+		"phone1":contact.Phone1,
+		"phone2":contact.Phone2,
 	}})
 	return err
 }

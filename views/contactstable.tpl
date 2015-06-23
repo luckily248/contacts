@@ -5,7 +5,8 @@
            		       <td>{{$k}}</td>
            		       <td>{{$v.Name}}</td>
            		       <td>{{$v.Remark}}</td>
-           		       <td>{{$v.Phone}}</td>
+           		       <td>{{$v.Phone1}}</td>
+						<td>{{$v.Phone2}}</td>
 						<td>
 					
 				<a  class="btn ajax" href="/contacts/{{$v.GetId}}/preupdate" data-method="post" data-replace-closest="tr">

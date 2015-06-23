@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	."contacts/models"
+	"beego/validation"
 )
 
 type UpdateController struct {
@@ -60,19 +61,34 @@ func (c *UpdateController) Update(){
 	id:=c.Ctx.Input.Param(":id")
 	contact:=Contact{}
 	err:=c.ParseForm(&contact)
-	c.Ctx.Output.Status=200
+	valid:=validation.Validation{}
+	b,err := valid.Valid(&contact)
+	if err!=nil{
+		fmt.Errorf("valid:%s\n",err.Error())
+	}
+	if !b{
+		for _, err:= range valid.Errors{
+			fmt.Printf("errkey:%s,errmessge:%s\n",err.Key,err.Message)
+		}
+		c.Ctx.Output.Status=400
+		return
+		
+	}
 	//fmt.Printf("id:%s\n",contact.GetId())
 	//fmt.Printf("name:%s\n",contact.Name)
 	if err!=nil{
 			fmt.Errorf("parseerr:%s\n",err.Error())
+			c.Ctx.Output.Status=400
 			return
 	}
 	contact.SetId(id)
 	err=UpsertContact(contact)
 	if err!=nil{
 		fmt.Errorf("update%s\n",err.Error())
+		c.Ctx.Output.Status=400
 		return
 	}
+	c.Ctx.Output.Status=200
 	return
 }
 
@@ -102,10 +118,6 @@ func (c *UpdateController)PreUpdate(){
 	c.ServeJson()
 }
 
-//"contacts/:id/cancel"取消修改
-func (c *UpdateController)Cancel(){
-	
-}
 
 // "contacts/getall" 获取所有
 func (c *UpdateController) GetAll(){

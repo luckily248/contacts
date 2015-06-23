@@ -21,6 +21,14 @@
 
 <body>
 <h2 class="sub-header">企业通讯录</h2>
+	<div class="has-error">
+	<div class="checkbox">
+	<label>
+	<input type="checkbox" id="checkboxError" value="option1">
+	checkbox with error
+	</label>
+	</div>
+	</div>
   <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -28,7 +36,9 @@
                   <th style="width: 5%">编号</th>
                   <th style="width: 15%">名字</th>
                   <th style="width: 15%">职位</th>
-                  <th>电话</th>
+                  <th>电话1</th>
+				 <th>电话2</th>
+				<th></th>
                 </tr>
               </thead>
               
@@ -39,7 +49,8 @@
            		       <td>{{$k}}</td>
            		       <td>{{$v.Name}}</td>
            		       <td>{{$v.Remark}}</td>
-           		       <td>{{$v.Phone}}</td>
+           		       <td>{{$v.Phone1}}</td>
+						<td>{{$v.Phone2}}</td>
 						<td>
 					
 				<a  class="btn ajax" href="/contacts/{{$v.GetId}}/preupdate" data-method="post" data-replace-closest="tr">
@@ -59,15 +70,20 @@
             </table>
 			<a class="btn ajax" href="/contacts/add" data-method="post" data-append="#contacts">添加联系人</a>
           </div>
-	<script>
-	)
 
-	</script>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="static/js/bootstrap.min.js"></script>
 	<script src="static/js/eldarion-ajax.min.js"></script>
+	<script>
+	$(function() {
+        $("form").on("eldarion-ajax:error", function(e, $el, data) {
+           $el.find("input[type=text]").val("");
+        });
+    })
+	</script>
 </body>
 
 </html>
