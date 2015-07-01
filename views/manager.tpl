@@ -21,12 +21,6 @@
 
 <body>
 <h2 class="sub-header">企业通讯录</h2>
-	<div class="has-error">
-	<div class="checkbox">
-	<label>
-	<input type="checkbox" id="checkboxError" value="option1">
-	checkbox with error
-	</label>
 	</div>
 	</div>
   <div class="table-responsive">

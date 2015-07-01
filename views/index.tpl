@@ -25,19 +25,22 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>编号</th>
-                  <th>名字</th>
-                  <th>职位</th>
-                  <th>电话</th>
+                  <th style="width: 5%">编号</th>
+                  <th style="width: 15%">名字</th>
+                  <th style="width: 15%">职位</th>
+                  <th>电话1</th>
+				 <th>电话2</th>
                 </tr>
               </thead>
               <tbody>
 			{{range $k,$v:=.contacts}}
                 <tr>
-                  <td>{{$v.Id}}</td>
-                  <td>{{$v.Name}}</td>
-                  <td>{{$v.Remark}}</td>
-                  <td>{{$v.Phone}}</td>
+                <td>{{$k}}</td>
+           		       <td>{{$v.Name}}</td>
+           		       <td>{{$v.Remark}}</td>
+           		       <td>{{$v.Phone1}}</td>
+						<td>{{$v.Phone2}}</td>
+						<td>
                 </tr>
 				{{end}}
               </tbody>

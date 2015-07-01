@@ -24,6 +24,7 @@ func (c *UpdateController) Index() {
 	fmt.Printf("%v\n",contacts)
 	c.Data["contacts"]=contacts
 	c.TplNames = "manager.tpl"
+	
 }
 
 // "/contacts/add" 添加空行
