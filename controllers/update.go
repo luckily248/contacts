@@ -30,9 +30,12 @@ func (c *UpdateController) Index() {
 
 // "/contacts/add" 添加空行
 func (c *UpdateController) Add() {
-	rawt, err := template.ParseFiles("/Developer/gopath/src/contacts/views/contactraw.tpl")
+	rawt, err := template.ParseFiles("./views/contactraw.tpl")
 	if err != nil {
 		fmt.Errorf("%s\n", err.Error())
+		c.Ctx.Output.Status = 404
+		c.Data["json"] = err.Error()
+		c.ServeJson()
 	}
 	var buf bytes.Buffer
 	contact := NewContact()
@@ -97,7 +100,7 @@ func (c *UpdateController) Update() {
 //"contacts/:id/preupdate" 准备更新目标
 func (c *UpdateController) PreUpdate() {
 	id := c.Ctx.Input.Param(":id")
-	rawt, err := template.ParseFiles("/Developer/gopath/src/contacts/views/contactraw.tpl")
+	rawt, err := template.ParseFiles("./views/contactraw.tpl")
 	if err != nil {
 		c.Ctx.WriteString(err.Error())
 	}
@@ -127,7 +130,7 @@ func (c *UpdateController) GetAll() {
 
 //contacts/getalltable 获取表格
 func (c *UpdateController) GetAllTable() {
-	rawt, err := template.ParseFiles("/Developer/gopath/src/contacts/views/contactstable.tpl")
+	rawt, err := template.ParseFiles("./views/contactstable.tpl")
 	if err != nil {
 		c.Ctx.WriteString(err.Error())
 	}

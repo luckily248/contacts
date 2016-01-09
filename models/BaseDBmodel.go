@@ -16,9 +16,9 @@ func (this *BaseDBmodel) DBname() string {
 }
 
 func (this *BaseDBmodel) init() {
-	newsession, err := mgo.Dial("")
+	newsession, err := mgo.Dial("localhost:27017")
 	if err != nil {
-		log.Fatal("mgo init error")
+		log.Fatalf("mgo init error :%s", err.Error())
 		panic(err)
 	}
 	this.session = newsession
